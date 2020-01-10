@@ -10,7 +10,8 @@ import {
   ImageStyle,
   ImageURISource,
   ImageSourcePropType,
-  StyleProp
+  StyleProp,
+  LayoutChangeEvent
 } from "react-native";
 import { BlurView } from "expo-blur";
 
@@ -28,6 +29,7 @@ interface ImageProps {
   onLoadStart: () => void;
   onLoadEnd: () => void;
   onLoad: () => void;
+  onLayout: (e: LayoutChangeEvent) => void;
 }
 
 interface ImageState {
@@ -44,7 +46,8 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     onError: () => {},
     onLoadStart: () => {},
     onLoadEnd: () => {},
-    onLoad: () => {}
+    onLoad: () => {},
+    onLayout: () => {}
   };
 
   state = {
@@ -92,7 +95,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, onLoad, onLoadEnd, onLoadStart, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, onLoad, onLoadEnd, onLoadStart, onLayout, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
@@ -107,7 +110,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
       )
     ];
     return (
-      <View {...{ style }}>
+      <View {...{ style }} onLayout={onLayout}>
         {!!defaultSource && !isImageReady && (
           <RNImage onLoadStart={onLoadStart} source={defaultSource} style={computedStyle} {...otherProps} />
         )}
