@@ -25,6 +25,9 @@ interface ImageProps {
   transitionDuration?: number;
   tint?: "dark" | "light";
   onError: (error: { nativeEvent: { error: Error } }) => void;
+  onLoadStart: () => void;
+  onLoadEnd: () => void;
+  onLoad: () => void;
 }
 
 interface ImageState {
@@ -38,7 +41,10 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   static defaultProps = {
     transitionDuration: 300,
     tint: "dark",
-    onError: () => {}
+    onError: () => {},
+    onLoadStart: () => {},
+    onLoadEnd: () => {},
+    onLoad: () => {}
   };
 
   state = {
@@ -86,7 +92,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, onLoad, onLoadEnd, onLoadStart, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
@@ -102,7 +108,9 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady && <RNImage source={defaultSource} style={computedStyle} {...otherProps} />}
+        {!!defaultSource && !isImageReady && (
+          <RNImage onLoadStart={onLoadStart} source={defaultSource} style={computedStyle} {...otherProps} />
+        )}
         {!!preview && (
           <RNImage
             source={preview}
@@ -111,7 +119,9 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             {...otherProps}
           />
         )}
-        {isImageReady && <RNImage source={{ uri }} style={computedStyle} {...otherProps} />}
+        {isImageReady && (
+          <RNImage onLoad={onLoad} onLoadEnd={onLoadEnd} source={{ uri }} style={computedStyle} {...otherProps} />
+        )}
         {!!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
         {!!preview && Platform.OS === "android" && (
           <Animated.View style={[computedStyle, { backgroundColor: tint === "dark" ? black : white, opacity }]} />
