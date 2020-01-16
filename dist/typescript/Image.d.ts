@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Animated, ImageStyle, ImageURISource, ImageSourcePropType, StyleProp } from "react-native";
+import { Animated, ImageStyle, ImageURISource, ImageSourcePropType, StyleProp, LayoutChangeEvent } from "react-native";
 import { DownloadOptions } from "./CacheManager";
 interface ImageProps {
     style?: StyleProp<ImageStyle>;
@@ -14,6 +14,10 @@ interface ImageProps {
             error: Error;
         };
     }) => void;
+    onLoadStart: () => void;
+    onLoadEnd: () => void;
+    onLoad: () => void;
+    onLayout: (e: LayoutChangeEvent) => void;
 }
 interface ImageState {
     uri: string | undefined;
@@ -25,6 +29,10 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         transitionDuration: number;
         tint: string;
         onError: () => void;
+        onLoadStart: () => void;
+        onLoadEnd: () => void;
+        onLoad: () => void;
+        onLayout: () => void;
     };
     state: {
         uri: undefined;
