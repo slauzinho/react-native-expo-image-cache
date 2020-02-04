@@ -1,7 +1,7 @@
 {
   "name": "react-native-expo-image-cache",
-  "version": "4.1.0",
-  "description": "React Native Image Cache and Progressive Loading based on Expo",
+  "version": "4.1.1",
+  "description": "Fork of React Native Image Cache and Progressive Loading based on Expo",
   "main": "dist/module/index.js",
   "react-native": "dist/module/index.js",
   "types": "dist/typescript/index.d.ts",
@@ -16,18 +16,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wcandillon/react-native-expo-image-cache.git"
+    "url": "https://github.com/slauzinho/react-native-expo-image-cache.git"
   },
-  "author": "William Candillon <wcandillon@gmail.com>",
+  "author": "Bruno Silva",
   "license": "MIT",
   "keywords": [
     "react",
     "image",
     "cache"
   ],
-  "bugs": {
-    "url": "https://github.com/wcandillon/react-native-expo-image-cache/issues"
-  },
   "homepage": "https://github.com/wcandillon/react-native-expo-image-cache#readme",
   "devDependencies": {
     "@react-native-community/bob": "^0.4.1",
